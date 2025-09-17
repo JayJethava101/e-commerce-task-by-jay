@@ -5,6 +5,7 @@ const { createOrderItems } = require("../orderItem/service");
 const OrderItem = require("../orderItem/model");
 const Product = require("../product/model");
 const sequelize = require("../../utils/db");
+const User = require("../user/model");
 
 exports.createOrder = async (OrderData, currentUserId) => {
   const Products = OrderData?.Products || [];
@@ -68,8 +69,10 @@ exports.getOrderDetails = async (orderId) => {
         model: OrderItem,
         include: [Product],
       },
-
-      // todo: include user details
+      {
+        model: User,
+        attributes: { exclude: ["password"] },
+      },
     ],
   });
 
